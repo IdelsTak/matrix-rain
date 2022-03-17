@@ -3,13 +3,19 @@
 ### Build
 
 ```shell
-mvn clean install
+$ mvn clean install
 ```
 
 ### Run
 
 ```shell
-java -jar matrix-rain-1.0.0.jar
+$ java -jar matrix-rain-1.0.0.jar
+```
+
+#### Or
+
+```shell
+$ mvn exec:java
 ```
 
 ### Start screensaver
