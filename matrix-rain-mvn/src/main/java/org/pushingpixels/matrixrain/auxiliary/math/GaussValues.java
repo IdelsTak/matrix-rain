@@ -31,8 +31,7 @@ package org.pushingpixels.matrixrain.auxiliary.math;
 
 public final class GaussValues {
   public static int SAMPLE_RATE;
-
-  private static double[] gaussValues = {
+  private static final double[] GAUSS_VALUES = {
     .5000, .5080, .5160, .5239, .5319, .5398, .5478, .5557, .5636, .5714, .5793, .5871, .5948,
     .6026, .6103, .6179, .6255, .6331, .6406, .6480, .6554, .6628, .6700, .6772, .6844, .6915,
     .6985, .7054, .7123, .7190, .7258, .7324, .7389, .7454, .7518, .7580, .7642, .7704, .7764,
@@ -46,27 +45,23 @@ public final class GaussValues {
     .9953, .9956, .9959, .9961, .9963, .9965, .9967, .9969, .9971, .9973, .9974, .9976, .9977,
     .9979, .9980, .9981, .9982, .9984, .9985, .9986, .9987
   };
-
-  private static int count = gaussValues.length;
-
+  private static final int COUNT = GAUSS_VALUES.length;
   private static int[] filterValues;
-
   private static boolean tableComputed;
-
   private static int valueCount;
 
   public static void initialize() {
     if (tableComputed) return;
-    SAMPLE_RATE = (int) ((gaussValues.length - 1) / 1.5);
-    valueCount = gaussValues.length;
+    SAMPLE_RATE = (int) ((GAUSS_VALUES.length - 1) / 1.5);
+    valueCount = GAUSS_VALUES.length;
     int iHalfSample = SAMPLE_RATE / 2;
     filterValues = new int[valueCount];
     for (int i = 0; i <= iHalfSample; i++) {
       filterValues[i] =
-          (int) (255 * (1.0 - (1.0 - gaussValues[50 + i]) - (1.0 - gaussValues[50 - i])));
+          (int) (255 * (1.0 - (1.0 - GAUSS_VALUES[50 + i]) - (1.0 - GAUSS_VALUES[50 - i])));
     }
     for (int i = iHalfSample + 1; i < valueCount; i++) {
-      filterValues[i] = (int) (255 * (1.0 - gaussValues[i - 50]));
+      filterValues[i] = (int) (255 * (1.0 - GAUSS_VALUES[i - 50]));
     }
     tableComputed = true;
   }
@@ -74,8 +69,8 @@ public final class GaussValues {
   public static double getValue(double d) {
     int index = (int) (d * 50.0);
     if (index < 0) index = -index;
-    if (index >= count) return 1.0;
-    return gaussValues[index];
+    if (index >= COUNT) return 1.0;
+    return GAUSS_VALUES[index];
   }
 
   // get [0..maxValue) random number with gaussian distribution
@@ -84,14 +79,14 @@ public final class GaussValues {
     double rand = Math.random() / 2.0;
     // get corresponing gaussian random number from 0..150
     int index = 0;
-    for (int i = 0; i < gaussValues.length; i++) {
-      if (rand < (gaussValues[i] - 0.5)) {
+    for (int i = 0; i < GAUSS_VALUES.length; i++) {
+      if (rand < (GAUSS_VALUES[i] - 0.5)) {
         index = i;
         break;
       }
     }
     // scale to 0..maxValue
-    return index * maxValue / gaussValues.length;
+    return index * maxValue / GAUSS_VALUES.length;
   }
 
   public static int getIntensity(double distance) {
