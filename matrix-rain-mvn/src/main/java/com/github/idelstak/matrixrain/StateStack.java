@@ -29,12 +29,10 @@ public class StateStack {
 
   private class StateStackFrame {
     public int state;
-
     private StateStackFrame prev;
   }
 
   private StateStackFrame last;
-
   private int count;
 
   public StateStack(int state) {
