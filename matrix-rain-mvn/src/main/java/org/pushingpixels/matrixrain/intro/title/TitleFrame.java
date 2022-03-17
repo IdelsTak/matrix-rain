@@ -35,17 +35,20 @@ import org.pushingpixels.matrixrain.connector.ConnectorObject;
 import org.pushingpixels.matrixrain.font.MemoryGlyph;
 
 public class TitleFrame {
-  // if glyph is completely outside the screen, the corresponding
-  // entry in the following two arrays is null
-  private MemoryGlyph[] glyphs;
+  /**
+   * if glyph is completely outside the screen, the corresponding entry in the following two arrays
+   * is null
+   */
+  private final MemoryGlyph[] glyphs;
 
-  private Point[] glyphPositions;
+  private final Point[] glyphPositions;
+  /**
+   * if connector is completely outside the screen, the corresponding entry in the following two
+   * arrays is null
+   */
+  private final ConnectorObject[] connectors;
 
-  // if connector is completely outside the screen, the corresponding
-  // entry in the following two arrays is null
-  private ConnectorObject[] connectors;
-
-  private Point[] connectorPositions;
+  private final Point[] connectorPositions;
 
   public TitleFrame(int glyphCount, int connectorCount) {
     this.glyphs = new MemoryGlyph[glyphCount];
