@@ -22,13 +22,13 @@
  */
 package com.github.idelstak.matrixrain;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.io.IOException;
 import java.util.Calendar;
-
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-
 import com.github.idelstak.matrixrain.auxiliary.graphics.TrueColorBitmapObject;
 import com.github.idelstak.matrixrain.auxiliary.graphics.colors.manager.ColorManager1ColorScheme;
 import com.github.idelstak.matrixrain.auxiliary.math.intersect.Circle1PixelArbitraryIntersectorFactory;
@@ -41,57 +41,33 @@ import com.github.idelstak.matrixrain.phosphore.PhosphoreCloudFactory;
 public final class MatrixPanel extends JPanel implements Runnable {
 
   public static final int STATE_INITIALIZING = 0;
-
   public static final int STATE_LOADFILES = 1;
-
   public static final int STATE_INTRO = 2;
-
   public static final int STATE_SHOWHISTORY = 20;
-
   public static final int STATE_REPLAYINTRO = 31;
-
   public static final int STATE_REPLAYRAIN = 32;
-
   public static final int TIME_DELTA = 100;
-
   private String message = "";
-
-  // private ImageLoader imageLoader;
-
   private StateStack stateStack;
-
   private int appWidth, appHeight;
-
   private Thread delayManager = null; // The thread that handles time delays
-
-  // private QATimer timer;
-
   private MatrixPainter quizPainter;
-
   private Image mainImage;
-
   private String titleLine;
-
   private IntroManager introManager;
-
   private GlyphFactory glyphFactory;
-
   private GlyphFactory abcGlyphFactory;
-
   private PhosphoreCloudFactory pcFct;
-
   private Circle1PixelArbitraryIntersectorFactory iFct;
-
   /** Indication whether a stop request has been issued on <code>this</code> thread. */
   private boolean stopRequested = false;
 
-  // --------------------------
-  // Initializing the applet
-  // --------------------------
+  /** Initializing the applet. */
   public void init() {
     this.stateStack = new StateStack(STATE_INITIALIZING);
     this.appWidth = (int) this.getSize().width;
     this.appHeight = (int) this.getSize().height;
+
     System.out.println("dimensions: " + appWidth + "*" + appHeight);
 
     this.quizPainter = new MatrixPainter(this, new ColorManager1ColorScheme(Color.green));
@@ -103,8 +79,8 @@ public final class MatrixPanel extends JPanel implements Runnable {
     this.repaint();
   }
 
+  /** Creates and runs this thread. */
   public void start() {
-    // create and run the thread
     this.delayManager = new Thread(this);
     this.delayManager.setPriority(Thread.MAX_PRIORITY);
     this.delayManager.start();
@@ -174,14 +150,14 @@ public final class MatrixPanel extends JPanel implements Runnable {
     return true;
   }
 
+  /** Destroys the thread. */
   public void stop() {
-    // destroy the thread
     delayManager = null;
   }
 
-  // Get Applet
+  /** @return the applet info. */
   public String getAppletInfo() {
-    return "Applet Information: written by Kirill Grouchnikov , 2000-2003";
+    return "Applet Information: first written by Kirill Grouchnikov , 2000-2003";
   }
 
   @Override
@@ -280,6 +256,13 @@ public final class MatrixPanel extends JPanel implements Runnable {
     }
   }
 
+  /**
+   * - Initializes various graphics components
+   *
+   * <p>- Downloads all images
+   *
+   * <p>- Shows title in the Matrix rain
+   */
   @Override
   public void run() {
     // initialize various graphics components
