@@ -29,9 +29,13 @@
  */
 package org.pushingpixels.matrixrain.intro;
 
-import java.awt.*;
-
-import org.pushingpixels.matrixrain.auxiliary.graphics.*;
+import java.awt.Component;
+import java.awt.Image;
+import java.awt.Point;
+import org.pushingpixels.matrixrain.auxiliary.graphics.IndexBitmapObject;
+import org.pushingpixels.matrixrain.auxiliary.graphics.IndexImageManager;
+import org.pushingpixels.matrixrain.auxiliary.graphics.TrueColorBitmapObject;
+import org.pushingpixels.matrixrain.auxiliary.graphics.TrueColorImageManager;
 import org.pushingpixels.matrixrain.auxiliary.graphics.colors.manager.ColorManager;
 import org.pushingpixels.matrixrain.auxiliary.math.intersect.Circle1PixelArbitraryIntersectorFactory;
 import org.pushingpixels.matrixrain.connector.ConnectorObject;
@@ -80,9 +84,10 @@ public final class IntroManager {
 
   public static final int CONNECTOR_GLOW = 200;
 
-  private int windowWidth, windowHeight;
+  private final int windowWidth;
+  private final int windowHeight;
 
-  private DropManager dropManager;
+  private final DropManager dropManager;
 
   private boolean paused;
 
@@ -101,9 +106,9 @@ public final class IntroManager {
 
   private TitleZoomManager titleZoomManager;
 
-  private ColorManager colorManager;
+  private final ColorManager colorManager;
 
-  private GlyphFactory glyphFactory;
+  private final GlyphFactory glyphFactory;
 
   // rains
   Image mainImage;
@@ -121,9 +126,9 @@ public final class IntroManager {
   // off-screen image
   boolean takeTrueColor;
 
-  private IndexImageManager indexImageManager;
+  private final IndexImageManager indexImageManager;
 
-  private TrueColorImageManager trueColorImageManager;
+  private final TrueColorImageManager trueColorImageManager;
 
   // mosaic
   private TrueColorBitmapObject startMosaicImage;
@@ -347,33 +352,30 @@ public final class IntroManager {
     this.dropManager.fillColorIndexMap(this.indexImageManager);
 
     switch (this.state) {
-      case IntroManager.STATE_SHOWTITLE:
-        this.paintTitle();
-        break;
-      case IntroManager.STATE_ZOOMTITLE:
-        this.paintIndexBitmap(this.titleZoomManager.getCurrentBitmap());
-        break;
-      case IntroManager.STATE_WAITFORRAINTTOSTOP:
-        break;
-      case IntroManager.STATE_RAINEDGES:
+      case IntroManager.STATE_SHOWTITLE -> this.paintTitle();
+      case IntroManager.STATE_ZOOMTITLE -> this.paintIndexBitmap(
+          this.titleZoomManager.getCurrentBitmap());
+      case IntroManager.STATE_WAITFORRAINTTOSTOP -> {}
+      case IntroManager.STATE_RAINEDGES -> {
         if (this.bellRainManager.toGetIndexBitmap())
           this.paintIndexBitmap(this.bellRainManager.getCurrentIndexBitmap());
         else {
           this.trueColorImageManager.resetImage();
           this.paintTrueColorBitmap(this.bellRainManager.getCurrentTrueColorBitmap());
         }
-        break;
-      case IntroManager.STATE_RAINLETTERS:
+      }
+      case IntroManager.STATE_RAINLETTERS -> {
         if (this.letterRainManager.toGetIndexBitmap())
           this.paintIndexBitmap(this.letterRainManager.getCurrentIndexBitmap());
         else {
           this.trueColorImageManager.resetImage();
           this.paintTrueColorBitmap(this.letterRainManager.getCurrentTrueColorBitmap());
         }
-        break;
-      case IntroManager.STATE_MOSAICIZE:
+      }
+      case IntroManager.STATE_MOSAICIZE -> {
         this.currIteration++;
         this.paintMosaic();
+      }
     }
     //
     if (this.takeTrueColor) this.trueColorImageManager.recomputeImage();
@@ -464,7 +466,6 @@ public final class IntroManager {
     }
     if (this.delayBetweenSuccessiveIterations < 100) {
       this.delayBetweenSuccessiveIterations += 10;
-      return;
     }
   }
 
@@ -479,7 +480,6 @@ public final class IntroManager {
     }
     if (this.delayBetweenSuccessiveIterations > 1) {
       this.delayBetweenSuccessiveIterations--;
-      return;
     }
   }
 
@@ -553,7 +553,7 @@ public final class IntroManager {
 
     // System.out.println(this.state);
     switch (this.state) {
-      case IntroManager.STATE_RAINREGULAR:
+      case IntroManager.STATE_RAINREGULAR -> {
         dropManager.iteration(1);
         this.recomputeImage();
         if (this.startCountingToNextState) {
@@ -576,25 +576,8 @@ public final class IntroManager {
             this.currIteration = 0;
           }
         }
-        break;
-
-        // case IntroManager.STATE_RAINWITHLOGO:
-        // this.takeTrueColor = true;
-        // dropManager.iteration(1);
-        // this.recomputeImage();
-        // if (this.startCountingToNextState) {
-        // this.timeInThisState--;
-        // if (this.timeInThisState <= 0) {
-        // this.state = IntroManager.STATE_SHOWTITLE;
-        // this.timeInThisState = this.titleManager
-        // .getTitleAnimationEndTime()
-        // + IntroManager.EXPIRE_TIME_SHOWTITLE;
-        // this.titleZoomManager.setCurrentAtFirstFrame();
-        // }
-        // }
-        // break;
-        //
-      case IntroManager.STATE_SHOWTITLE:
+      }
+      case IntroManager.STATE_SHOWTITLE -> {
         this.takeTrueColor = false;
         dropManager.iteration(1);
         this.recomputeImage();
@@ -605,9 +588,9 @@ public final class IntroManager {
           break;
         }
         this.titleManager.iteration(1);
-        break;
+      }
 
-      case IntroManager.STATE_ZOOMTITLE:
+      case IntroManager.STATE_ZOOMTITLE -> {
         dropManager.iteration(1);
         this.recomputeImage();
         this.titleZoomManager.setCurrentAtNextFrame();
@@ -617,9 +600,9 @@ public final class IntroManager {
           this.state = IntroManager.STATE_WAITFORRAINTTOSTOP;
           this.dropManager.removeAllDrops();
         }
-        break;
+      }
 
-      case IntroManager.STATE_WAITFORRAINTTOSTOP:
+      case IntroManager.STATE_WAITFORRAINTTOSTOP -> {
         dropManager.iteration(1);
         this.recomputeImage();
         if (dropManager.getDropCount() == 0) {
@@ -631,9 +614,9 @@ public final class IntroManager {
           System.out.println("Created bell rain manager in " + (time1 - time0));
           this.state = IntroManager.STATE_RAINEDGES;
         }
-        break;
+      }
 
-      case IntroManager.STATE_RAINEDGES:
+      case IntroManager.STATE_RAINEDGES -> {
         this.bellRainManager.iteration();
         this.takeTrueColor = !this.bellRainManager.toGetIndexBitmap();
         this.recomputeImage();
@@ -652,9 +635,9 @@ public final class IntroManager {
           System.out.println("Created letter rain manager in " + (time1 - time0));
           this.state = IntroManager.STATE_RAINLETTERS;
         }
-        break;
+      }
 
-      case IntroManager.STATE_RAINLETTERS:
+      case IntroManager.STATE_RAINLETTERS -> {
         this.letterRainManager.iteration();
         this.takeTrueColor = !this.letterRainManager.toGetIndexBitmap();
         this.recomputeImage();
@@ -667,9 +650,9 @@ public final class IntroManager {
           this.timeInThisState = IntroManager.TIME_BLENDTOMOSAIC;
           this.currIteration = 0;
         }
-        break;
+      }
 
-      case IntroManager.STATE_MOSAICIZE:
+      case IntroManager.STATE_MOSAICIZE -> {
         this.takeTrueColor = true;
         this.recomputeImage();
         if (this.startCountingToNextState) {
@@ -679,11 +662,26 @@ public final class IntroManager {
             this.state = IntroManager.STATE_INTROENDED;
           }
         }
-        break;
+      }
 
-      case IntroManager.STATE_INTROENDED:
-        break;
+      case IntroManager.STATE_INTROENDED -> {}
     }
+    // case IntroManager.STATE_RAINWITHLOGO:
+    // this.takeTrueColor = true;
+    // dropManager.iteration(1);
+    // this.recomputeImage();
+    // if (this.startCountingToNextState) {
+    // this.timeInThisState--;
+    // if (this.timeInThisState <= 0) {
+    // this.state = IntroManager.STATE_SHOWTITLE;
+    // this.timeInThisState = this.titleManager
+    // .getTitleAnimationEndTime()
+    // + IntroManager.EXPIRE_TIME_SHOWTITLE;
+    // this.titleZoomManager.setCurrentAtFirstFrame();
+    // }
+    // }
+    // break;
+    //
   }
 
   public TrueColorBitmapObject getMosaicBitmap() {
@@ -699,12 +697,8 @@ public final class IntroManager {
      * IntroManager.STATE_SHOWALLLETTERS; this.dropManager.removeAllDrops(); }
      */
     switch (this.state) {
-      case IntroManager.STATE_RAINEDGES:
-        this.bellRainManager.iteration();
-        break;
-      case IntroManager.STATE_RAINLETTERS:
-        this.letterRainManager.iteration();
-        break;
+      case IntroManager.STATE_RAINEDGES -> this.bellRainManager.iteration();
+      case IntroManager.STATE_RAINLETTERS -> this.letterRainManager.iteration();
     }
   }
 
