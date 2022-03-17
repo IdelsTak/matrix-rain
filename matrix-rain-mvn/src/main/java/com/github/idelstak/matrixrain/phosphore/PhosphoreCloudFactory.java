@@ -27,21 +27,13 @@ public final class PhosphoreCloudFactory {
 
   private final class PhosphoreCloudElement {
     public int sizeN;
-
     public int maxWidth;
-
     public int maxHeight;
-
     public PhosphoreCloud[] clouds;
-
     public PhosphoreBitCloud[] bitClouds00;
-
     public PhosphoreBitCloud[] bitClouds01;
-
     public PhosphoreBitCloud[] bitClouds10;
-
     public PhosphoreBitCloud[] bitClouds11;
-
     public PhosphoreCloudElement next;
 
     public PhosphoreCloudElement(double size, int cloudCount) {
@@ -72,13 +64,9 @@ public final class PhosphoreCloudFactory {
 
   private final class PhosphoreCloudList {
     public PhosphoreCloudElement head;
-
     public PhosphoreCloudElement curr;
-
     public int length;
-
-    private int cloudCount;
-
+    private final int cloudCount;
     private int prevIndex = 0;
 
     public PhosphoreCloudList(int cloudCount) {
@@ -146,8 +134,7 @@ public final class PhosphoreCloudFactory {
     }
   }
 
-  private PhosphoreCloudList cloudList;
-
+  private final PhosphoreCloudList cloudList;
   public static long delta = 0;
 
   public PhosphoreCloudFactory(int cloudCount) {
