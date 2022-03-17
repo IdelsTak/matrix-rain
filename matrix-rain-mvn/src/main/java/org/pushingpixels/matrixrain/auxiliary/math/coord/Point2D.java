@@ -117,6 +117,7 @@ public final class Point2D {
     this.y += offsetY;
   }
 
+  @Override
   public String toString() {
     return "(" + x + ", " + y + ")";
   }
