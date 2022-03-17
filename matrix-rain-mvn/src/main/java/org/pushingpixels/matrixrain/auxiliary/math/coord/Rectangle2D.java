@@ -30,9 +30,8 @@
 package org.pushingpixels.matrixrain.auxiliary.math.coord;
 
 public final class Rectangle2D {
-  private Point2D pointTL;
-
-  private Point2D pointBR;
+  private final Point2D pointTL;
+  private final Point2D pointBR;
 
   public Rectangle2D(Point2D pointTL, Point2D pointBR) {
     this.pointTL = pointTL;
