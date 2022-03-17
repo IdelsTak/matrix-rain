@@ -79,7 +79,7 @@ public final class RandomalityTester {
     int[] outcomes = new int[3];
     for (int i = 0; i < 3; i++) outcomes[i] = 0;
     for (int i = 0; i < connectorString.length(); i++) {
-      int connector = new Integer("" + connectorString.charAt(i)).intValue();
+      int connector = Integer.parseInt("" + connectorString.charAt(i));
       outcomes[connector - 1]++;
     }
     return getChi2(connectorString.length(), outcomes, probabilities);
@@ -92,16 +92,22 @@ public final class RandomalityTester {
 
   public static double getChi2Probability(String[] connectorStrings) {
     String combinedStr = "";
-    for (int i = 0; i < connectorStrings.length; i++)
-      if (connectorStrings[i] != null) combinedStr += connectorStrings[i];
+    for (String connectorString : connectorStrings) {
+      if (connectorString != null) {
+        combinedStr += connectorString;
+      }
+    }
     return getChi2Probability(combinedStr);
   }
 
   public static double getChi2Probability(String connectorString, String[] connectorStrings) {
     String combinedStr = "";
     if (connectorStrings != null)
-      for (int i = 0; i < connectorStrings.length; i++)
-        if (connectorStrings[i] != null) combinedStr += connectorStrings[i];
+      for (String connectorString1 : connectorStrings) {
+        if (connectorString1 != null) {
+          combinedStr += connectorString1;
+        }
+      }
     combinedStr += connectorString;
     return getChi2Probability(combinedStr);
   }
@@ -111,7 +117,7 @@ public final class RandomalityTester {
     if (length == 0) return 0.0;
 
     int[] values = new int[length];
-    for (int i = 0; i < length; i++) values[i] = new Integer("" + valueString.charAt(i)).intValue();
+    for (int i = 0; i < length; i++) values[i] = Integer.parseInt("" + valueString.charAt(i));
 
     int u = 0, n1 = 0, n2 = 0;
     boolean isPrevA = (values[0] > median);
@@ -155,16 +161,22 @@ public final class RandomalityTester {
 
   public static double getMedianProbability(String[] valueStrings) {
     String combinedStr = "";
-    for (int i = 0; i < valueStrings.length; i++)
-      if (valueStrings[i] != null) combinedStr += valueStrings[i];
+    for (String valueString : valueStrings) {
+      if (valueString != null) {
+        combinedStr += valueString;
+      }
+    }
     return getMedianProbability(combinedStr);
   }
 
   public static double getMedianProbability(String valueString, String[] valueStrings) {
     String combinedStr = "";
     if (valueStrings != null)
-      for (int i = 0; i < valueStrings.length; i++)
-        if (valueStrings[i] != null) combinedStr += valueStrings[i];
+      for (String valueString1 : valueStrings) {
+        if (valueString1 != null) {
+          combinedStr += valueString1;
+        }
+      }
     combinedStr += valueString;
     return getMedianProbability(combinedStr);
   }
