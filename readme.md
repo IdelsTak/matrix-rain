@@ -12,6 +12,10 @@ mvn clean install
 java -jar matrix-rain-1.0.0.jar
 ```
 
+### Start screensaver
+
+Press `CTRL + ALT + M`
+
 ### Screen-shots
 
 ![1](screenshots/Screenshot_2022-03-17_08-35-29.png)
