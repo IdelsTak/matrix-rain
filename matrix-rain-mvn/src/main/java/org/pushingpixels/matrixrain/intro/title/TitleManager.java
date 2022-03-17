@@ -39,24 +39,15 @@ import org.pushingpixels.matrixrain.position.TitleConnectorPosition;
 import org.pushingpixels.matrixrain.position.TitleGlyphPosition;
 
 public class TitleManager {
-  private int windowWidth;
-
-  private int windowHeight;
-
+  private final int windowWidth;
+  private final int windowHeight;
   private int titleGlyphsCount;
-
   private MemoryGlyph[] titleGlyphs;
-
   private TitleGlyphPosition[] titleGlyphsPositions;
-
   private TitleGlyphPosition[] titleGlyphsPositionsClone;
-
   private int titleConnectorsCount;
-
   private ConnectorObject[] titleConnectors;
-
   private TitleConnectorPosition[] titleConnectorPositions;
-
   private TitleConnectorPosition[] titleConnectorPositionsClone;
 
   private int prevEndTime;
@@ -213,9 +204,11 @@ public class TitleManager {
     String[] connectors = new ConnectorManager().getGaussianConnectorChain(words);
     this.titleConnectorsCount = 0;
     if (connectors != null) {
-      for (int currConnector = 0; currConnector < connectors.length; currConnector++)
-        if (connectors[currConnector] != null)
-          this.titleConnectorsCount += connectors[currConnector].length();
+      for (String connector : connectors) {
+        if (connector != null) {
+          this.titleConnectorsCount += connector.length();
+        }
+      }
     }
     /*
      * System.out.println(""+this.titleConnectorsCount+ " connectors"); for
@@ -308,24 +301,24 @@ public class TitleManager {
 
         int connectorStartX, connectorEndX, connectorY = 0;
         switch (connectorType) {
-          case 1:
+          case 1 -> {
             // UP
             int topLeft = glyphLeft.getHighestRightSidePixel(connectorGlow);
             int topRight = glyphRight.getHighestLeftSidePixel(connectorGlow);
             connectorY = Math.max(topLeft, topRight);
-            break;
-          case 2:
+          }
+          case 2 -> {
             // CENTER
             int centerLeft = (glyphLeft.getTop() + glyphLeft.getBottom()) / 2;
             int centerRight = (glyphRight.getTop() + glyphRight.getBottom()) / 2;
             connectorY = (centerLeft + centerRight) / 2;
-            break;
-          case 3:
+          }
+          case 3 -> {
             // DOWN
             int bottomLeft = glyphLeft.getLowestRightSidePixel(connectorGlow);
             int bottomRight = glyphRight.getLowestLeftSidePixel(connectorGlow);
             connectorY = Math.min(bottomLeft, bottomRight);
-            break;
+          }
         }
         connectorStartX =
             tgpL.getX()
