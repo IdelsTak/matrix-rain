@@ -31,13 +31,10 @@ package org.pushingpixels.matrixrain.auxiliary.math;
 
 public class GaussConvolution {
 
-  private double[][] kernel;
-
-  private int[][] kernel_shift;
-
-  private double[] kernel_1d;
-
-  private int size;
+  private final double[][] kernel;
+  private final int[][] kernel_shift;
+  private final double[] kernel_1d;
+  private final int size;
 
   public GaussConvolution(double sigma, int size) {
     this.size = size;
