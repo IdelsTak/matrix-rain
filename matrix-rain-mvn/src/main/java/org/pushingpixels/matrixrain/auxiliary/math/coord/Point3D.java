@@ -31,9 +31,7 @@ package org.pushingpixels.matrixrain.auxiliary.math.coord;
 
 public final class Point3D {
   private double x;
-
   private double y;
-
   private double z;
 
   public Point3D(double x, double y, double z) {
@@ -66,6 +64,7 @@ public final class Point3D {
     return (dx * dx + dy * dy + dz * dz);
   }
 
+  @Override
   public String toString() {
     return "(" + x + ", " + y + ", " + z + ")";
   }
