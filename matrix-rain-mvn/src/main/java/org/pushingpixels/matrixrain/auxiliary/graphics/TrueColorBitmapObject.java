@@ -125,14 +125,16 @@ public class TrueColorBitmapObject {
       for (int y = 0; y < this.height; y++) this.bitmap[x][y] = origPixels[y * this.width + x];
   }
 
-  public Object clone() {
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    super.clone();
     TrueColorBitmapObject newObject = new TrueColorBitmapObject();
     if (this.bitmap != null) {
       newObject.width = this.width;
       newObject.height = this.height;
       int[][] newBitmap = new int[this.width][this.height];
       for (int i = 0; i < this.width; i++)
-        for (int j = 0; j < this.height; j++) newBitmap[i][j] = this.bitmap[i][j];
+        System.arraycopy(this.bitmap[i], 0, newBitmap[i], 0, this.height);
       newObject.bitmap = newBitmap;
     }
     return newObject;
