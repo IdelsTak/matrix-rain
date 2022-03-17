@@ -31,10 +31,8 @@ package org.pushingpixels.matrixrain.auxiliary.math.coord;
 
 public final class Polygon2D {
   private static int currID = 0;
-
   public int id;
-
-  private Point2D[] points;
+  private final Point2D[] points;
 
   public Polygon2D(Point2D[] points) {
     this.id = Polygon2D.currID++;
@@ -63,7 +61,9 @@ public final class Polygon2D {
 
   public void dump() {
     if (this.points == null) return;
-    for (int i = 0; i < this.points.length; i++) System.out.print(points[i].toString() + ", ");
+    for (Point2D point : this.points) {
+      System.out.print(point.toString() + ", ");
+    }
     System.out.println();
   }
 }
