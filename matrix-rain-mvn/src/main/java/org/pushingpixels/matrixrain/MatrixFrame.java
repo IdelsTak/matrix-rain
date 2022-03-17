@@ -53,7 +53,8 @@ public class MatrixFrame extends JFrame {
     this.getRootPane()
         .getInputMap()
         .put(
-            KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_MASK | InputEvent.CTRL_MASK),
+            KeyStroke.getKeyStroke(
+                KeyEvent.VK_M, InputEvent.ALT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK),
             "runMatrix");
     this.getRootPane().getActionMap().put("runMatrix", new MatrixAction(this.getRootPane()));
 
