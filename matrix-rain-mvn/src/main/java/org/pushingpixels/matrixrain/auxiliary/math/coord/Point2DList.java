@@ -33,9 +33,7 @@ public final class Point2DList {
 
   public class Point2DElement {
     public Point2D point;
-
     public Point2DElement next;
-
     public Point2DElement prev;
 
     public Point2DElement(Point2D point) {
